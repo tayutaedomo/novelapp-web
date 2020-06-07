@@ -2,28 +2,72 @@
 
 {% block content %}
 
+<h2>書影ジャンル判定</h2>
+
 <form action="/category" method="post" enctype="multipart/form-data">
 
   <input class="form-control form-control-md"
+         style="margin-bottom: 10px;"
          type="file" name="image" accept="image/png,image/jpeg,image/jpg"
          placeholder="Image File">
 
   <div class="col-sm-10 offset-sm">
-    <button type="submit">Submit</button>
+    <button type="submit">実行</button>
   </div>
 
 </form>
 
 
 {% if local.file %}
-<h3>Uploaded File</h3>
+<div style="margin-top: 30px;"></div>
 
 <div class="row">
   <div class="col-sm-10">
-    <label>{{ local.file.filename }}</label>
-  </div>
-  <div class="col-sm-10">
-    <img src="data:{{ local.file.mimetype }};base64,{{ local.file_base64 }}">
+
+    <div class="row">
+      <div class="col-sm-6">
+        {% if local.predicted %}
+        <h4>判定結果</h4>
+
+        <table class='table'>
+          <tbody>
+          <tr>
+            <td>ジャンル</td>
+            <td>確率</td>
+          </tr>
+          <tr style="{% if local.y == 0 %}background-color: greenyellow;{% endif %}">
+            <td>ファンタジー</td>
+            <td>{{ '%0.5f'| format(local.y_proba[0]|float) }} %</td>
+          </tr>
+          <tr style="{% if local.y == 1 %}background-color: greenyellow;{% endif %}">
+            <td>恋愛</td>
+            <td>{{ '%0.5f'| format(local.y_proba[1]|float) }} %</td>
+          </tr>
+          <tr style="{% if local.y == 2 %}background-color: greenyellow;{% endif %}">
+            <td>文芸</td>
+            <td>{{ '%0.5f'| format(local.y_proba[2]|float) }} %</td>
+          </tr>
+          <tr style="{% if local.y == 3 %}background-color: greenyellow;{% endif %}">
+            <td>SF</td>
+            <td>{{ '%0.5f'| format(local.y_proba[3]|float) }} %</td>
+          </tr>
+          </tbody>
+        </table>
+        {% endif %}
+      </div>
+
+      <div class="col-sm-6">
+        <h4>画像:{{ local.file.filename }}</h4>
+
+        <div class="row">
+          <div class="col-sm-10">
+            <img src="data:{{ local.file.mimetype }};base64,{{ local.file_base64 }}"
+                 style="width: 300px;">
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
 {% endif %}
