@@ -1,7 +1,7 @@
 import os
 import base64
 from io import BytesIO
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 from flask_httpauth import HTTPBasicAuth
 import numpy as np
 from PIL import Image
@@ -24,8 +24,9 @@ def verify_password(username, password):
 @app.route('/')
 @auth.login_required
 def index():
-    local = {}
-    return render_template('./index.html', local=local)
+    # local = {}
+    # return render_template('./index.html', local=local)
+    return redirect(url_for('category'))
 
 
 @app.route('/category', methods=['GET', 'POST'])
@@ -57,8 +58,6 @@ def category():
         local['y'] = y
         local['y_proba'] = y_proba
 
-        #np.set_printoptions(suppress=True)
-        #print(np.get_printoptions())
         print(y, y_proba)
 
     return render_template('./category.html', local=local)
