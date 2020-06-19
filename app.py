@@ -13,6 +13,8 @@ app.config.from_object(APP_SETTINGS)
 
 auth = HTTPBasicAuth()
 
+model = load_model('etc/model/category-2.h5', compile=False)
+
 
 @auth.verify_password
 def verify_password(username, password):
@@ -41,8 +43,6 @@ def category():
 
         content = file.read()
         local['file_base64'] = str(base64.b64encode(content), 'utf-8')
-
-        model = load_model('etc/model/category-2.h5', compile=False)
 
         img = Image.open(BytesIO(content))
         img_resize = img.resize((229, 229))
