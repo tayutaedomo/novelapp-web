@@ -19,7 +19,7 @@ $ git lfs install
 
 ## Local Server
 ```
-$ cd flask-sandbox
+$ cd novelapp-web
 $ python app.py
 $ open "http://127.0.0.1:5000/"
 ```
