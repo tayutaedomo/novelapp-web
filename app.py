@@ -13,7 +13,7 @@ app.config.from_object(APP_SETTINGS)
 
 auth = HTTPBasicAuth()
 
-model = load_model('etc/model/category-2.h5', compile=False)
+model = None
 
 
 @auth.verify_password
@@ -38,6 +38,10 @@ def category():
     }
 
     if request.files.get('image'):
+        global model
+        if not model:
+            model = load_model('etc/model/category-2.h5', compile=False)
+
         file = request.files['image']
         local['file'] = file
 
