@@ -13,7 +13,7 @@ app.config.from_object(APP_SETTINGS)
 
 auth = HTTPBasicAuth()
 
-model = load_model('etc/model/category-2.h5', compile=False)
+model = None
 
 
 @auth.verify_password
@@ -38,13 +38,17 @@ def category():
     }
 
     if request.files.get('image'):
+        global model
+        if not model:
+            model = load_model('etc/model/category-2.h5', compile=False)
+
         file = request.files['image']
         local['file'] = file
 
         content = file.read()
         local['file_base64'] = str(base64.b64encode(content), 'utf-8')
 
-        img = Image.open(BytesIO(content))
+        img = Image.open(BytesIO(content)).convert('RGB')
         img_resize = img.resize((229, 229))
         img_np = np.asarray(img_resize) / 255.0
         img_reshape = img_np.reshape(1, 229, 229, 3)
