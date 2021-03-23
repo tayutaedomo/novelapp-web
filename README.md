@@ -26,6 +26,15 @@ $ open "http://127.0.0.1:5000/"
 Basic Auth: novelapp / novels
 
 
+## Docker
+```
+$ cd novelapp-web
+$ docker build -t novelapp-web .
+$ docker run --rm -it -e PORT=8080 -p 8080:8080 novelapp-web
+$ open 'http://0.0.0.0:8080'
+```
+
+
 ## Config ENV
 You should set the appropriate ENV.
 ```
@@ -36,3 +45,10 @@ $ export APP_SETTINGS=config.StagingConfig
 $ export APP_SETTINGS=config.ProductionConfig
 ```
 
+
+## Cloud Run
+```
+$ cd novelapp-web
+$ gcloud builds submit --tag gcr.io/[PROJECT-ID]/novelapp-web
+$ gcloud run deploy --image gcr.io/[PROJECT-ID]/novelapp-web --platform managed
+```
