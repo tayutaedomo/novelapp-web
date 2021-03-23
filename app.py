@@ -48,7 +48,7 @@ def category():
         content = file.read()
         local['file_base64'] = str(base64.b64encode(content), 'utf-8')
 
-        img = Image.open(BytesIO(content))
+        img = Image.open(BytesIO(content)).convert('RGB')
         img_resize = img.resize((229, 229))
         img_np = np.asarray(img_resize) / 255.0
         img_reshape = img_np.reshape(1, 229, 229, 3)
